@@ -1,9 +1,10 @@
+using Domain;
 using Domain.DTOs;
 
 namespace Application.Services
 {
     public interface IContactServices
     {
-        Task CreateContact(ContactDTO contact);
+        Task<Contact> CreateContact(ContactDTO contact);
     }
 }

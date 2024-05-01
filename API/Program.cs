@@ -1,5 +1,7 @@
 using Application.Services;
+using Domain.Repositories;
 using Infra;
+using Infra.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,14 +14,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IContactServices, ContactServices>();
-
-var app = builder.Build();
-
+builder.Services.AddScoped<IContactRepository, ContactRepository>();
 builder.Services.AddDbContext<Context>(options =>
 {
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
     options.EnableSensitiveDataLogging();
 });
+
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

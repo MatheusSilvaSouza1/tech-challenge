@@ -1,24 +1,18 @@
 using Domain;
+using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infra
 {
     public class Context : DbContext
     {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public Context(DbContextOptions<Context> options) : base(options)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlite("Data Source=../Infra/Db.sqlite3;Cache=Shared");
-                optionsBuilder.EnableSensitiveDataLogging();
-            }
-
-            base.OnConfiguring(optionsBuilder);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // modelBuilder.Ignore<ValidationResult>();
+            modelBuilder.Ignore<ValidationResult>();
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(Context).Assembly);
         }
 

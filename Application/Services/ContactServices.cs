@@ -1,12 +1,27 @@
+using Domain;
 using Domain.DTOs;
+using Domain.Repositories;
 
 namespace Application.Services
 {
-    public class ContactServices : IContactServices
+    public class ContactServices(IContactRepository contactRepository) : IContactServices
     {
-        public Task CreateContact(ContactDTO contact)
+        private readonly IContactRepository _contactRepository = contactRepository;
+
+        public async Task<Contact> CreateContact(ContactDTO contact)
         {
-            throw new NotImplementedException();
+            var domainContact = Contact.Create(contact);
+
+            if (!domainContact.ValidationResult.IsValid)
+            {
+                return domainContact;
+            }
+
+            _contactRepository.Create(domainContact);
+
+            await _contactRepository.SaveChangesAsync();
+
+            return domainContact;
         }
     }
 }
