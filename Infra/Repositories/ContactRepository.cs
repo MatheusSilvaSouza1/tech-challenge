@@ -1,5 +1,6 @@
 using Domain;
 using Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Repositories
 {
@@ -10,6 +11,11 @@ namespace Infra.Repositories
         public void Create(Contact contact)
         {
             _context.Contacts.Add(contact);
+        }
+
+        public async Task<DDD?> FindDDD(int dddId)
+        {
+            return await _context.DDDs.FirstOrDefaultAsync(e => e.Id == dddId);
         }
 
         public async Task SaveChangesAsync()

@@ -23,6 +23,11 @@ namespace Infra.Mappings
 
             builder.Property(e => e.Phone)
                 .IsRequired();
+
+            builder.HasOne(e => e.DDD)
+                .WithMany(e => e.Contacts)
+                .HasPrincipalKey(e => e.Id)
+                .HasForeignKey(e => e.DDDId);
         }
     }
 }

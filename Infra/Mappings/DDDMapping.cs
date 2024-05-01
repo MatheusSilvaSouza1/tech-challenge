@@ -14,7 +14,6 @@ namespace Infra.Mappings
 
             builder.Property(e => e.Region)
                 .IsRequired();
-
         }
     }
 }

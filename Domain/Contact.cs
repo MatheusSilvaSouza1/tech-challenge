@@ -10,6 +10,8 @@ namespace Domain
         public string Name { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
+        public int DDDId { get; set; }
+        public DDD DDD { get; set; }
         public ValidationResult ValidationResult { get; set; } = new();
 
         private Contact()
@@ -22,7 +24,8 @@ namespace Domain
             {
                 Email = contact.Email,
                 Name = contact.Name,
-                Phone = contact.Phone,
+                Phone = contact.Phone[2..],
+                DDDId = Convert.ToInt32(contact.Phone[..2])
             };
 
             domainContact.ValidationResult = new CreateContactValidation().Validate(domainContact);

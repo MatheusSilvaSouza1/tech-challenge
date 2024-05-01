@@ -1,6 +1,7 @@
 using Domain;
 using Domain.DTOs;
 using Domain.Repositories;
+using FluentValidation.Results;
 
 namespace Application.Services
 {
@@ -11,6 +12,13 @@ namespace Application.Services
         public async Task<Contact> CreateContact(ContactDTO contact)
         {
             var domainContact = Contact.Create(contact);
+
+            var ddd = await _contactRepository.FindDDD(domainContact.DDDId);
+
+            if (ddd is null)
+            {
+                domainContact.ValidationResult.Errors.Add(new ValidationFailure("DDD", "DDD invalido"));
+            }
 
             if (!domainContact.ValidationResult.IsValid)
             {
