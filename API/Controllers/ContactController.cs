@@ -21,4 +21,19 @@ public class ContactController(IContactServices contactServices) : ControllerBas
 
         return BadRequest(result.ValidationResult);
     }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateContact(ContactUpdateDTO contact)
+    {
+        try
+        {
+            var result = await _contactServices.UpdateContact(contact);
+
+            return result.ValidationResult.IsValid ? Created() : BadRequest(result.ValidationResult);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 }

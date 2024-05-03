@@ -17,6 +17,6 @@ namespace Infra
         }
 
         public virtual DbSet<Contact> Contacts => Set<Contact>();
-        public virtual DbSet<DDD> DDDs => Set<DDD>();
+        public virtual DbSet<DDD> DDDs => Set<DDD>();        
     }
 }
