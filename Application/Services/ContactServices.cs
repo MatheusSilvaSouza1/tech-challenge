@@ -1,3 +1,4 @@
+using Application.NewFolder3;
 using Domain;
 using Domain.DTOs;
 using Domain.Repositories;
@@ -46,6 +47,20 @@ namespace Application.Services
             await _contactRepository.SaveChangesAsync();
 
             return contactId;
+        }
+
+        public async Task<List<ContactGetDTO>> GetContacts(int? ddd)
+        {
+            var contacts = ddd is null ? 
+                await _contactRepository.FindAllContacts() : 
+                await _contactRepository.FindContactsByDDD((int)ddd);
+
+            foreach (var contact in contacts)
+            {
+                contact.DDD = await _contactRepository.FindDDD(contact.DDDId);
+            }
+
+            return contacts.ToDTOList();
         }
 
         public async Task<Contact> UpdateContact(ContactUpdateDTO contact)

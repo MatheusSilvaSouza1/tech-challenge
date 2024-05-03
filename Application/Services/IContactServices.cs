@@ -7,6 +7,7 @@ namespace Application.Services
     {
         Task<Contact> CreateContact(ContactDTO contact);
         Task<Guid> DeleteContact(Guid contactId);
+        Task<List<ContactGetDTO>> GetContacts(int? ddd);
         Task<Contact> UpdateContact(ContactUpdateDTO contact);
     }
 }

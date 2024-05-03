@@ -1,6 +1,7 @@
 using Domain.DTOs;
 using Application.Services;
 using Microsoft.AspNetCore.Mvc;
+using Domain;
 
 namespace API.Controllers;
 
@@ -9,6 +10,22 @@ namespace API.Controllers;
 public class ContactController(IContactServices contactServices) : ControllerBase
 {
     private readonly IContactServices _contactServices = contactServices;
+
+
+    [HttpGet]
+    public async Task<IActionResult> Get(int? ddd)
+    {
+        try
+        {
+            var result = await _contactServices.GetContacts(ddd);
+
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 
     [HttpPost]
     public async Task<IActionResult> Post(ContactDTO contact)
@@ -20,7 +37,7 @@ public class ContactController(IContactServices contactServices) : ControllerBas
         }
 
         return BadRequest(result.ValidationResult);
-    }
+    }       
 
     [HttpPut]
     public async Task<IActionResult> UpdateContact(ContactUpdateDTO contact)
