@@ -13,6 +13,18 @@ namespace Infra.Repositories
             _context.Contacts.Add(contact);
         }
 
+        public void Delete(Contact contact)
+        {
+            try
+            {
+                _context.Contacts.Remove(contact);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public async Task<Contact?> FindContact(Guid id)
         {
             try

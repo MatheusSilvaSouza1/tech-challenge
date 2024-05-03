@@ -29,7 +29,22 @@ public class ContactController(IContactServices contactServices) : ControllerBas
         {
             var result = await _contactServices.UpdateContact(contact);
 
-            return result.ValidationResult.IsValid ? Created() : BadRequest(result.ValidationResult);
+            return result.ValidationResult.IsValid ? Ok() : BadRequest(result.ValidationResult);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    
+    [HttpDelete]
+    public async Task<IActionResult> DeleteContact(Guid contactId)
+    {
+        try
+        {
+            var result = await _contactServices.DeleteContact(contactId);
+
+            return Ok();
         }
         catch (Exception ex)
         {
