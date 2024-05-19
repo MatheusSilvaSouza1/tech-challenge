@@ -46,7 +46,7 @@ public class ContactController(IContactServices contactServices) : ControllerBas
         {
             var result = await _contactServices.UpdateContact(contact);
 
-            return result.ValidationResult.IsValid ? Ok() : BadRequest(result.ValidationResult);
+            return result.IsSuccess ? Ok() : BadRequest(result.ValidationFailure);
         }
         catch (Exception ex)
         {

@@ -33,20 +33,13 @@ namespace Domain
             return domainContact;
         }
 
-        public static Contact Update(ContactUpdateDTO contact)
+        public void Update(ContactUpdateDTO contact)
         {
-            var domainContact = new Contact()
-            {
-                Id = contact.Id,
-                Email = contact.Email,
-                Name = contact.Name,
-                Phone = contact.Phone[2..],
-                DDDId = Convert.ToInt32(contact.Phone[..2])
-            };
-
-            domainContact.ValidationResult = new CreateContactValidation().Validate(domainContact);
-
-            return domainContact;
+            Name = contact.Name;
+            Phone = contact.Phone;
+            Email = contact.Email;
+            Phone = contact.Phone[2..];
+            DDDId = Convert.ToInt32(contact.Phone[..2]);
         }
     }
 }

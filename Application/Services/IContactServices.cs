@@ -1,3 +1,4 @@
+using Application.Generic;
 using Domain;
 using Domain.DTOs;
 
@@ -8,6 +9,6 @@ namespace Application.Services
         Task<Contact> CreateContact(ContactDTO contact);
         Task<Guid> DeleteContact(Guid contactId);
         Task<List<ContactGetDTO>> GetContacts(int? ddd);
-        Task<Contact> UpdateContact(ContactUpdateDTO contact);
+        Task<Result<Contact>> UpdateContact(ContactUpdateDTO contact);
     }
 }

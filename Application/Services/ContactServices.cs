@@ -1,3 +1,4 @@
+using Application.Generic;
 using Application.NewFolder3;
 using Domain;
 using Domain.DTOs;
@@ -63,34 +64,27 @@ namespace Application.Services
             return contacts.ToDTOList();
         }
 
-        public async Task<Contact> UpdateContact(ContactUpdateDTO contact)
+        public async Task<Result<Contact>> UpdateContact(ContactUpdateDTO contact)
         {
             var contactExists = await _contactRepository.FindContact(contact.Id);
 
             if (contactExists is null)
             {
-                throw new Exception("O contato não existe para ser atualizado");
+                return Result<Contact>.Failure(new ValidationFailure("Contact", "O contato não existe para ser atualizado"));
             }
 
-            var domainContact = Contact.Update(contact);
+            contactExists.Update(contact);
 
-            var ddd = await _contactRepository.FindDDD(domainContact.DDDId);
+            var ddd = await _contactRepository.FindDDD(contactExists.DDDId);
 
             if (ddd is null)
             {
-                domainContact.ValidationResult.Errors.Add(new ValidationFailure("DDD", "DDD invalido"));
+                return Result<Contact>.Failure(new ValidationFailure("DDD", "DDD invalido"));
             }
-
-            if (!domainContact.ValidationResult.IsValid)
-            {
-                return domainContact;
-            }
-
-            _contactRepository.Update(domainContact);
 
             await _contactRepository.SaveChangesAsync();
 
-            return domainContact;
+            return Result<Contact>.Success(contactExists);
         }
     }
 }

@@ -10,6 +10,5 @@ namespace Domain.Repositories
         Task<List<Contact>> FindContactsByDDD(int ddd);
         Task<DDD?> FindDDD(int dDD);
         Task SaveChangesAsync();
-        void Update(Contact domainContact);
     }
 }

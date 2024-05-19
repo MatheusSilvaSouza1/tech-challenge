@@ -70,23 +70,5 @@ namespace Infra.Repositories
         {
             await _context.SaveChangesAsync();
         }
-
-        public async void Update(Contact contact)
-        {
-            try
-            {
-                var trackedEntity = _context.Set<Contact>().SingleOrDefaultAsync(entry => entry.Id == contact.Id);
-                _context.Entry<Contact>(await trackedEntity).State = EntityState.Detached;
-
-                _context.Set<Contact>().Attach(contact);
-                _context.Entry(contact).State = EntityState.Modified;
-
-                _context.Contacts.Update(contact);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
     }
 }

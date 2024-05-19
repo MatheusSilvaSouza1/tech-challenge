@@ -10,6 +10,7 @@ namespace Application.NewFolder3
         {
             return new ContactGetDTO
             {
+                Id = contact.Id,
                 Name = contact.Name,
                 Email = contact.Email,
                 Phone = String.Join("", [contact.DDDId.ToString(), contact.Phone]),
