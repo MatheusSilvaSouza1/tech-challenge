@@ -34,20 +34,20 @@ namespace Application.Services
             return domainContact;
         }
 
-        public async Task<Guid> DeleteContact(Guid contactId)
+        public async Task<Result<Contact>> DeleteContact(Guid contactId)
         {
             var contactExists = await _contactRepository.FindContact(contactId);
 
             if (contactExists is null)
             {
-                throw new Exception("O contato não existe para ser removido");
+                return Result<Contact>.Failure(new ValidationFailure("Contact", "O contato não existe para ser atualizado"));
             }
 
             _contactRepository.Delete(contactExists);
 
             await _contactRepository.SaveChangesAsync();
 
-            return contactId;
+            return Result<Contact>.Success(contactExists);
         }
 
         public async Task<List<ContactGetDTO>> GetContacts(int? ddd)
