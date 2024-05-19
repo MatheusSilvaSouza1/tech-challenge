@@ -32,5 +32,14 @@ namespace Domain
 
             return domainContact;
         }
+
+        public void Update(ContactUpdateDTO contact)
+        {
+            Name = contact.Name;
+            Phone = contact.Phone;
+            Email = contact.Email;
+            Phone = contact.Phone[2..];
+            DDDId = Convert.ToInt32(contact.Phone[..2]);
+        }
     }
 }
