@@ -15,50 +15,22 @@ namespace Infra.Repositories
 
         public void Delete(Contact contact)
         {
-            try
-            {
-                _context.Contacts.Remove(contact);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            _context.Contacts.Remove(contact);
         }
 
         public async Task<List<Contact>> FindAllContacts()
         {
-            try
-            {
-                return await _context.Contacts.ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return await _context.Contacts.Include(item => item.DDD).ToListAsync();
         }
 
         public async Task<Contact?> FindContact(Guid id)
         {
-            try
-            {
-                return await _context.Contacts.FindAsync(id);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return await _context.Contacts.FindAsync(id);
         }
 
         public async Task<List<Contact>> FindContactsByDDD(int ddd)
         {
-            try
-            {
-                return [.._context.Contacts.Where(e => e.DDDId == ddd)];
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return [.. _context.Contacts.Where(e => e.DDDId == ddd)];
         }
 
         public async Task<DDD?> FindDDD(int dddId)
