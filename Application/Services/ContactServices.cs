@@ -56,11 +56,6 @@ namespace Application.Services
                 await _contactRepository.FindAllContacts() : 
                 await _contactRepository.FindContactsByDDD((int)ddd);
 
-            foreach (var contact in contacts)
-            {
-                contact.DDD = await _contactRepository.FindDDD(contact.DDDId);
-            }
-
             return contacts.ToDTOList();
         }
 

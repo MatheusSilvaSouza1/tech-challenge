@@ -30,7 +30,7 @@ namespace Infra.Repositories
 
         public async Task<List<Contact>> FindContactsByDDD(int ddd)
         {
-            return [.. _context.Contacts.Where(e => e.DDDId == ddd)];
+            return [.. _context.Contacts.Include(item => item.DDD).Where(e => e.DDDId == ddd)];
         }
 
         public async Task<DDD?> FindDDD(int dddId)
