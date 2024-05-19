@@ -24,9 +24,17 @@ namespace Domain
             {
                 Email = contact.Email,
                 Name = contact.Name,
-                Phone = contact.Phone[2..],
-                DDDId = Convert.ToInt32(contact.Phone[..2])
+                Phone = contact.Phone[2..]
             };
+
+            if (int.TryParse(contact.Phone[..2], out int dddId))
+            {
+                domainContact.DDDId = dddId;
+            }
+            else
+            {
+                domainContact.ValidationResult.Errors.Add(new ValidationFailure("Phone", "Invalid DDD"));
+            }
 
             domainContact.ValidationResult = new CreateContactValidation().Validate(domainContact);
 
