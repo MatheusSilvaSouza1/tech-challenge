@@ -1,7 +1,5 @@
 using Domain;
-using Domain.DTOs;
-using FluentValidation.Results;
-using Xunit;
+using TechChallenge.Tests.Entitiy;
 
 namespace TechChallenge.Tests.Domain
 {
@@ -11,34 +9,24 @@ namespace TechChallenge.Tests.Domain
         public void Create_ShouldReturnContact_WhenContactDTOIsValid()
         {
             // Arrange
-            var contactDto = new ContactDTO
-            {
-                Name = "John Doe",
-                Phone = "12123456789",
-                Email = "john@example.com"
-            };
+            var contactDto = ContactBuilder.Build();
 
             // Act
             var contact = Contact.Create(contactDto);
 
             // Assert
             Assert.NotNull(contact);
-            Assert.Equal("John Doe", contact.Name);
-            Assert.Equal("123456789", contact.Phone);
-            Assert.Equal("john@example.com", contact.Email);
-            Assert.Equal(12, contact.DDDId);
+            Assert.Equal(contactDto.Name, contact.Name);
+            Assert.Equal(contactDto.Phone, string.Concat(contact.DDDId.ToString(), contact.Phone));
+            Assert.Equal(contactDto.Email, contact.Email);
         }
 
         [Fact]
-        public void Create_ShouldHaveValidationErrors_WhenContactDTOIsInvalid()
+        public void Create_ShouldHaveValidationErrors_WhenEmailContactDTOIsInvalid()
         {
             // Arrange
-            var contactDto = new ContactDTO
-            {
-                Name = "John Doe",
-                Phone = "invalid-phone",
-                Email = "invalid-email"
-            };
+            var contactDto = ContactBuilder.Build();
+            contactDto.Email = contactDto.Email.Replace("@", "");
 
             // Act
             var contact = Contact.Create(contactDto);
@@ -46,6 +34,26 @@ namespace TechChallenge.Tests.Domain
             // Assert
             Assert.NotNull(contact);
             Assert.NotEmpty(contact.ValidationResult.Errors);
+            Assert.True(contact.ValidationResult.Errors.Count() == 1);
+            Assert.Equal("'Email' is not a valid email address.", contact.ValidationResult.Errors[0].ErrorMessage);
         }
+
+        [Fact]
+        public void Create_ShouldHaveValidationErrors_WhenPhoneContactDTOIsInvalid()
+        {
+            // Arrange
+            var contactDto = ContactBuilder.Build();
+            contactDto.Phone = contactDto.Phone[3..];
+
+            // Act
+            var contact = Contact.Create(contactDto);
+
+            // Assert
+            Assert.NotNull(contact);
+            Assert.NotEmpty(contact.ValidationResult.Errors);
+            Assert.True(contact.ValidationResult.Errors.Count() == 1);
+            Assert.Equal("'Phone' number must contain 8 or 9 digits.", contact.ValidationResult.Errors[0].ErrorMessage);
+        }
+        
     }
 }
