@@ -14,6 +14,10 @@ namespace Domain.Validations
             RuleFor(e => e.Phone)
                 .NotEmpty()
                 .NotNull();
+
+            RuleFor(e => e.DDDId)
+            .NotEmpty()
+            .NotNull();
         }
     }
 }

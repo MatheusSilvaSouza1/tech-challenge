@@ -18,6 +18,12 @@ namespace Domain
         {
         }
 
+        public Contact(string name, string phone, int dDDId)
+        {
+            Name = name;
+            Phone = phone;
+            DDDId = dDDId;
+        }
         public static Contact Create(ContactDTO contact)
         {
             var domainContact = new Contact()
@@ -30,10 +36,6 @@ namespace Domain
             if (int.TryParse(contact.Phone[..2], out int dddId))
             {
                 domainContact.DDDId = dddId;
-            }
-            else
-            {
-                domainContact.ValidationResult.Errors.Add(new ValidationFailure("Phone", "Invalid DDD"));
             }
 
             domainContact.ValidationResult = new CreateContactValidation().Validate(domainContact);
