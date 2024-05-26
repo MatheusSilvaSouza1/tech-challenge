@@ -13,7 +13,13 @@ namespace Domain.Validations
 
             RuleFor(e => e.Phone)
                 .NotEmpty()
+                .NotNull()
+                .Matches(@"^\d{8,9}$").WithMessage("'Phone' number must contain 8 or 9 digits.");
+
+            RuleFor(e => e.DDDId)
+                .NotEmpty()
                 .NotNull();
+
         }
     }
 }
