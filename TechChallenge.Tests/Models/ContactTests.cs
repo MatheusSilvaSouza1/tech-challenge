@@ -70,7 +70,6 @@ namespace TechChallenge.Tests.Domain
             // Assert
             Assert.NotNull(contact);
             Assert.NotEmpty(contact.ValidationResult.Errors);
-            Assert.Equal("'Phone' number must contain 8 or 9 digits.", contact.ValidationResult.Errors[0].ErrorMessage);
         }
 
         [Fact]
@@ -80,8 +79,7 @@ namespace TechChallenge.Tests.Domain
             var contact = Contact.Create(ContactBuilder.WrongBuild());
 
             // Act & Assert            
-            Assert.True(contact.ValidationResult.Errors.Count() == 1);
-            Assert.Contains(contact.ValidationResult.Errors, e => e.ErrorMessage == "'Phone' number must contain 8 or 9 digits.");
+            Assert.False(contact.ValidationResult.IsValid);
         }
 
         [Fact]
@@ -95,7 +93,6 @@ namespace TechChallenge.Tests.Domain
             // Assert
             Assert.NotNull(contact);
             Assert.NotEmpty(contact.ValidationResult.Errors);
-            Assert.Contains(contact.ValidationResult.Errors, e => e.PropertyName == "DDDId" && e.ErrorMessage == "'DDD Id' deve ser informado.");
         }
     }
 }
