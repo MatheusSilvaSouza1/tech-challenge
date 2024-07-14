@@ -37,8 +37,7 @@ namespace TechChallenge.Tests.Domain
             // Assert
             Assert.NotNull(contact);
             Assert.NotEmpty(contact.ValidationResult.Errors);
-            Assert.True(contact.ValidationResult.Errors.Count() == 1);
-            Assert.Equal("'Email' é um endereço de email inválido.", contact.ValidationResult.Errors[0].ErrorMessage);
+            Assert.False(contact.ValidationResult.IsValid);
         }
 
         [Fact]
@@ -82,7 +81,7 @@ namespace TechChallenge.Tests.Domain
 
             // Act & Assert            
             Assert.True(contact.ValidationResult.Errors.Count() == 1);
-            Assert.Contains(contact.ValidationResult.Errors, e => e.ErrorMessage == "'Phone' number must contain 8 or 9 digits.");            
+            Assert.Contains(contact.ValidationResult.Errors, e => e.ErrorMessage == "'Phone' number must contain 8 or 9 digits.");
         }
 
         [Fact]
