@@ -22,6 +22,11 @@ jobs:
     
     - name: Build
       run: dotnet build --no-restore
+
+    - name: Setup tests integrations
+      run: |
+        docker pull postgres
+        docker run -e POSTGRES_USER=tech-challenge -e POSTGRES_PASSWORD=tech-challenge -e POSTGRES_DB=tech-challenge -d postgres
     
     - name: Test
       run: dotnet test --no-build --verbosity normal
