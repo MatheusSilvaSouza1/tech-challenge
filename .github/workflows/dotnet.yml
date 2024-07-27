@@ -10,6 +10,21 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    services: 
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: tech-challenge
+          POSTGRES_PASSWORD: tech-challenge
+          POSTGRES_DB: tech-challenge
+        ports:
+          - 5432:5432
+        options: > 
+          --health-cmd="pg_isready -U tech-challenge"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET
@@ -23,10 +38,8 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     
-    - name: Setup tests integrations
-      run: |
-        docker pull postgres
-        docker run -e POSTGRES_USER=tech-challenge -e POSTGRES_PASSWORD=tech-challenge -e POSTGRES_DB=tech-challenge -d postgres
+    - name: Wait for PostgreSQL
+      run: sleep 30
     
     - name: Test
       run: dotnet test --no-build --verbosity normal
@@ -43,5 +56,3 @@ jobs:
         context: .
         tags: 'escorpion559/tech-challenge:latest'
         push: true
-            
-          
