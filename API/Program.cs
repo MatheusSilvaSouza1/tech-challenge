@@ -23,6 +23,9 @@ builder.Services.AddDbContext<Context>(options =>
 
 var app = builder.Build();
 
+using var scope = app.Services?.GetService<IServiceScopeFactory>()?.CreateScope();
+var context = scope?.ServiceProvider.GetRequiredService<Context>();
+context?.Database.Migrate();
 // Configure the HTTP request pipeline.
 
 app.UseSwagger();
@@ -35,3 +38,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }

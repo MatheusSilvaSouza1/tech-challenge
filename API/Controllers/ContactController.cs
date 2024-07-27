@@ -33,11 +33,11 @@ public class ContactController(IContactServices contactServices) : ControllerBas
         var result = await _contactServices.CreateContact(contact);
         if (result.ValidationResult.IsValid)
         {
-            return Created();
+            return Ok(result.Id);
         }
 
         return BadRequest(result.ValidationResult);
-    }       
+    }
 
     [HttpPut]
     public async Task<IActionResult> UpdateContact(ContactUpdateDTO contact)
@@ -53,7 +53,7 @@ public class ContactController(IContactServices contactServices) : ControllerBas
             return BadRequest(ex.Message);
         }
     }
-    
+
     [HttpDelete]
     public async Task<IActionResult> DeleteContact(Guid contactId)
     {
