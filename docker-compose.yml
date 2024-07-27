@@ -9,7 +9,7 @@ volumes:
 
 
 services:
-  api:
+  webapi:
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -17,6 +17,9 @@ services:
       - 7296:7296
     depends_on:
       - db
+      - prometheus
+    networks:
+      - zabbix_net
 
   db:
     image: postgres
@@ -29,6 +32,43 @@ services:
       - 5432:5432
     volumes:
       - db-data:/var/lib/postgresql/data
+  
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus_grafprom
+    restart: always
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - 9090:9090
+    networks:
+      - zabbix_net
+  
+  grafana:
+    image: grafana/grafana:7.2.1
+    ports:
+      - "3000:3000"   
+    networks:
+      - zabbix_net 
+
+    # build: 
+    #   context: .
+    #   dockerfile: dockerfile-prometheus.yml
+    # ports:
+    #   - "9090:9090"
+    # configs:
+    #   - source: prometheus_config
+    #     target: /etc/prometheus/prometheus.yml
+    # depends_on:
+    #   - api
+
+  # grafana:
+  #   image: grafana/grafana-enterprise
+  #   ports:
+  #     - "3001:3000"   
+  #   depends_on:
+  #     - prometheus
+      
   # mysql_zabbix:
   #   container_name: mysql_zabbix
   #   image: mysql:5.7

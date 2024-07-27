@@ -3,6 +3,7 @@ using Domain.Repositories;
 using Infra;
 using Infra.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,9 +29,19 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseHttpsRedirection();
+app.UseRouting();
+
+app.UseHttpMetrics();
+app.UseMetricServer();
 
 app.UseAuthorization();
+
+app.UseEndpoints(endpoints => {
+    endpoints.MapMetrics();
+    endpoints.MapControllers();
+});
+
+app.UseHttpsRedirection();
 
 app.MapControllers();
 
