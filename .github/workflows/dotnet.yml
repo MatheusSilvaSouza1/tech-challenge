@@ -34,9 +34,6 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     
-    - name: Wait for PostgreSQL
-      run: sleep 30
-    
     - name: Test
       run: dotnet test --no-build --verbosity normal
    
