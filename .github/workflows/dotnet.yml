@@ -23,7 +23,6 @@ jobs:
           --health-cmd="pg_isready -U tech-challenge"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=5
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET
