@@ -9,18 +9,6 @@ volumes:
 
 
 services:
-  webapi:
-    build:
-      context: .
-      dockerfile: ./Dockerfile
-    ports:
-      - 7296:7296
-    depends_on:
-      - db
-      - prometheus
-    networks:
-      - zabbix_net
-
   db:
     image: postgres
     container_name: db
@@ -32,7 +20,19 @@ services:
       - 5432:5432
     volumes:
       - db-data:/var/lib/postgresql/data
-  
+    networks:
+      - zabbix_net
+
+  webapi:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 7296:7296
+    depends_on:
+      - db
+    networks:
+      - zabbix_net
   prometheus:
     image: prom/prometheus
     container_name: prometheus_grafprom
@@ -43,103 +43,10 @@ services:
       - 9090:9090
     networks:
       - zabbix_net
-  
+
   grafana:
     image: grafana/grafana:7.2.1
     ports:
-      - "3000:3000"   
+      - "3000:3000"
     networks:
-      - zabbix_net 
-
-    # build: 
-    #   context: .
-    #   dockerfile: dockerfile-prometheus.yml
-    # ports:
-    #   - "9090:9090"
-    # configs:
-    #   - source: prometheus_config
-    #     target: /etc/prometheus/prometheus.yml
-    # depends_on:
-    #   - api
-
-  # grafana:
-  #   image: grafana/grafana-enterprise
-  #   ports:
-  #     - "3001:3000"   
-  #   depends_on:
-  #     - prometheus
-      
-  # mysql_zabbix:
-  #   container_name: mysql_zabbix
-  #   image: mysql:5.7
-  #   networks:
-  #     - zabbix_net
-  #   ports:
-  #     - '3306:3306'
-  #   volumes:
-  #     - './zabbix/mysql:/var/lib/data'
-  #   environment:
-  #     - MYSQL_ROOT_PASSWORD=zabbix
-  #     - MYSQL_DATABASE=zabbix
-  #     - MYSQL_USER=zabbix
-  #     - MYSQL_PASSWORD=zabbix
-
-  # zabbix_server:
-  #   container_name: zabbix_server
-  #   image: zabbix/zabbix-server-mysql:ubuntu-5.0.1
-  #   networks:
-  #     - zabbix_net
-  #   links:
-  #     - mysql_zabbix
-  #   restart: always
-  #   ports:
-  #     - '10051:10051'
-  #   volumes:
-  #     - './zabbix/alertscripts:/usr/lib/zabbix/alertscripts'
-  #   environment:
-  #     - DB_SERVER_HOST=mysql_zabbix
-  #     - MYSQL_DATABASE=zabbix
-  #     - MYSQL_USER=zabbix
-  #     - MYSQL_PASSWORD=zabbix
-  #   depends_on:
-  #     - mysql_zabbix
-
-  # zabbix_frontend:
-  #   container_name: zabbix_frontend
-  #   image: zabbix/zabbix-web-apache-mysql:ubuntu-5.0.1
-  #   networks:
-  #     - zabbix_net
-  #   links:
-  #     - mysql_zabbix
-  #   restart: always
-  #   ports:
-  #     - '80:8080'
-  #     - '443:8443'
-  #   environment:
-  #     - DB_SERVER_HOST=mysql_zabbix
-  #     - MYSQL_DATABASE=zabbix
-  #     - MYSQL_USER=zabbix
-  #     - MYSQL_PASSWORD=zabbix
-  #     - PHP_TZ=America/Sao_Paulo
-  #   depends_on:
-  #     - mysql_zabbix
-
-  # zabbix-agent:
-  #   container_name: zabbix-agent
-  #   image: zabbix/zabbix-agent:latest
-  #   user: root
-  #   networks:
-  #     - zabbix_net
-  #   links:
-  #     - zabbix_server
-  #   restart: always
-  #   privileged: true
-  #   volumes:
-  #     - /var/run:/var/run
-  #   ports:
-  #     - '10050:10050'
-  #   depends_on:
-  #     - zabbix_server
-  #   environment:
-  #     - ZBX_HOSTNAME=Zabbix server
-  #     - ZBX_SERVER_HOST=zabbix_server
+      - zabbix_net

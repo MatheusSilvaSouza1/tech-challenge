@@ -3,6 +3,7 @@ WORKDIR /app
 EXPOSE 7296
 
 ENV ASPNETCORE_URLS=http://+:7296
+ENV ASPNETCORE_ENVIRONMENT=Production
 
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG configuration=Release
