@@ -1,3 +1,4 @@
+using Contracts;
 using API.DTOs;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
@@ -35,7 +36,12 @@ public class ContactController(IPublishEndpoint _publishEndpoint) : ControllerBa
 
         // return BadRequest(result.ValidationResult);
 
-        await _publishEndpoint.Publish(contact);
+        await _publishEndpoint.Publish(new ContactMessage()
+        {
+            Name = contact.Name,
+            Phone = contact.Phone,
+            Email = contact.Email
+        });
         return Ok();
     }
 
