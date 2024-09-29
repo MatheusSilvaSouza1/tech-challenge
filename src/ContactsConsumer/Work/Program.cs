@@ -23,6 +23,7 @@ builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<MessageConsumer>();
     x.AddConsumer<UpdateContactsConsumer>();
+    x.AddConsumer<DeleteContactConsumer>();
 
     x.UsingRabbitMq((context, config) =>
     {

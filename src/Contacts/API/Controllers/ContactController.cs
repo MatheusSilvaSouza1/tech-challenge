@@ -83,7 +83,7 @@ public class ContactController(IPublishEndpoint _publishEndpoint) : ControllerBa
         //     return BadRequest(ex.Message);
         // }
 
-        await _publishEndpoint.Publish(new DeleteContact(contactId));
+        await _publishEndpoint.Publish(new DeleteContactMessage(contactId));
 
         return Ok();
     }

@@ -1,4 +1,5 @@
 ﻿
+using Application.Services;
 using Contracts;
 using MassTransit;
 
@@ -6,18 +7,22 @@ namespace Work.Consumers
 {
     public class DeleteContactConsumer : IConsumer<DeleteContactMessage>
     {
-        public readonly ILogger _logger;
+        public readonly IContactServices _contactService;
+        public readonly ILogger<DeleteContactConsumer> _logger;
 
-        public DeleteContactConsumer(ILogger logger)
+        public DeleteContactConsumer(ILogger<DeleteContactConsumer> logger, IContactServices contactServices)
         {
+            _contactService = contactServices;
             _logger = logger;
         }
 
-        public Task Consume(ConsumeContext<DeleteContactMessage> context)
+        public async Task Consume(ConsumeContext<DeleteContactMessage> context)
         {
-            _logger.LogInformation($"Received contact delete: {context.Message}");
+            _logger.LogInformation($"Received contact Update: {context.MessageId}");
 
-            return Task.CompletedTask;
+            await _contactService.DeleteContact(context.Message.ContactId);
+
+            _logger.LogInformation("Deleted Contact", context.MessageId);
         }
     }
 }
