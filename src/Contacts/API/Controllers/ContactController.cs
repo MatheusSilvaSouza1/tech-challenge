@@ -2,27 +2,27 @@ using Contracts;
 using API.DTOs;
 using MassTransit;
 using Microsoft.AspNetCore.Mvc;
+using Application.Services;
 
 namespace API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ContactController(IPublishEndpoint _publishEndpoint) : ControllerBase
+public class ContactController(IPublishEndpoint _publishEndpoint, IContactServices _contactServices) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> Get(int? ddd)
     {
-        // try
-        // {
-        //     var result = await _contactServices.GetContacts(ddd);
+        try
+        {
+            var result = await _contactServices.GetContacts(ddd);
 
-        //     return Ok(result);
-        // }
-        // catch (Exception ex)
-        // {
-        //     return BadRequest(ex.Message);
-        // }
-        return Ok();
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpPost]

@@ -1,5 +1,10 @@
 using Prometheus;
 using MassTransit;
+using Application.Services;
+using Microsoft.EntityFrameworkCore;
+using Domain.Repositories;
+using Infra.Repositories;
+using Infra;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,13 +16,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //!
-// builder.Services.AddScoped<IContactServices, ContactServices>();
-// builder.Services.AddScoped<IContactRepository, ContactRepository>();
-// builder.Services.AddDbContext<Context>(options =>
-// {
-//     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
-//     options.EnableSensitiveDataLogging();
-// });
+builder.Services.AddScoped<IContactServices, ContactServices>();
+builder.Services.AddScoped<IContactRepository, ContactRepository>();
+builder.Services.AddDbContext<Context>(options =>
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.EnableSensitiveDataLogging();
+});
 var configuring = builder.Configuration;
 
 builder.Services.AddMassTransit(builder =>
