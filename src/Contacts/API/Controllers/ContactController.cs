@@ -59,7 +59,13 @@ public class ContactController(IPublishEndpoint _publishEndpoint) : ControllerBa
         // {
         //     return BadRequest(ex.Message);
         // }
-        await _publishEndpoint.Publish(contact);
+        await _publishEndpoint.Publish(new ContactUpdateMessage()
+        {
+            Id = contact.Id,
+            Name = contact.Name,
+            Phone = contact.Phone,
+            Email = contact.Email
+        });
         return Ok();
     }
 

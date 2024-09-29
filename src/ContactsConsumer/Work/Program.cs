@@ -1,13 +1,28 @@
-using Work;
+using Application.Services;
+using Domain.Repositories;
+using Infra;
+using Infra.Repositories;
 using MassTransit;
+using Microsoft.EntityFrameworkCore;
+using Work.Consumers;
 
 var builder = Host.CreateApplicationBuilder(args);
 
 var configuring = builder.Configuration;
 
+builder.Services.AddScoped<IContactRepository, ContactRepository>();
+builder.Services.AddScoped<IContactServices, ContactServices>();
+builder.Services.AddDbContext<Context>(options =>
+ {
+     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+     options.EnableSensitiveDataLogging();
+ });
+
+
 builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<MessageConsumer>();
+    x.AddConsumer<UpdateContactsConsumer>();
 
     x.UsingRabbitMq((context, config) =>
     {
