@@ -10,9 +10,6 @@ ARG configuration=Release
 WORKDIR /src
 
 COPY ["./src/Contacts/API/API.csproj", "src/Contacts/API/"]
-# COPY ["./Application/Application.csproj", "src/Application/"]
-# COPY ["./Domain/Domain.csproj"          , "src/Domain/"]
-# COPY ["./Infra/Infra.csproj"            , "src/Infra/"]
 
 RUN dotnet restore "src/Contacts/API/API.csproj"
 
