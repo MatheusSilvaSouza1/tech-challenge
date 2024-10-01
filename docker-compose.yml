@@ -23,16 +23,44 @@ services:
     networks:
       - zabbix_net
 
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    networks:
+      - zabbix_net
+
   webapi:
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: ./dockerfile-contacts
     ports:
       - 7296:7296
     depends_on:
       - db
     networks:
       - zabbix_net
+  
+  work:
+    build:
+      context: .
+      dockerfile: ./dockerfile-contacts-consumer
+    # ports:
+    #   - 7296:7296
+    depends_on:
+      - db
+      - rabbitmq
+    networks:
+      - zabbix_net
+
   prometheus:
     image: prom/prometheus
     container_name: prometheus_grafprom
