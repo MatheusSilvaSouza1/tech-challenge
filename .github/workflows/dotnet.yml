@@ -45,7 +45,7 @@ jobs:
       uses: docker/build-push-action@v5.4.0
       with:
         context: .
-        file: ./Dockerfile.Contacts
+        file: ./dockerfile-contacts
         tags: 'escorpion559/contacts:latest'
         push: true
     
@@ -53,6 +53,6 @@ jobs:
       uses: docker/build-push-action@v5.4.0
       with:
         context: .
-        file: ./Dockerfile.ContactsConsumer
+        file: ./dockerfile-contacts-consumer
         tags: 'escorpion559/contactsconsumer:latest'
         push: true
