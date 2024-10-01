@@ -53,8 +53,6 @@ services:
     build:
       context: .
       dockerfile: ./dockerfile-contacts-consumer
-    # ports:
-    #   - 7296:7296
     depends_on:
       - db
       - rabbitmq
