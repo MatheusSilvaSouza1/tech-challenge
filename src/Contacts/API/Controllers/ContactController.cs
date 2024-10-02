@@ -28,14 +28,6 @@ public class ContactController(IPublishEndpoint _publishEndpoint, IContactServic
     [HttpPost]
     public async Task<IActionResult> Post(ContactDTO contact)
     {
-        // var result = await _contactServices.CreateContact(contact);
-        // if (result.ValidationResult.IsValid)
-        // {
-        //     return Ok(result.Id);
-        // }
-
-        // return BadRequest(result.ValidationResult);
-
         await _publishEndpoint.Publish(new ContactMessage()
         {
             Name = contact.Name,
@@ -48,17 +40,6 @@ public class ContactController(IPublishEndpoint _publishEndpoint, IContactServic
     [HttpPut]
     public async Task<IActionResult> UpdateContact(ContactUpdateDTO contact)
     {
-        // try
-        // {
-        //     // var result = await _contactServices.UpdateContact(contact);
-
-        //     // return result.IsSuccess ? Ok() : BadRequest(result.ValidationFailure);
-        //     return Ok();
-        // }
-        // catch (Exception ex)
-        // {
-        //     return BadRequest(ex.Message);
-        // }
         await _publishEndpoint.Publish(new ContactUpdateMessage()
         {
             Id = contact.Id,
@@ -72,17 +53,6 @@ public class ContactController(IPublishEndpoint _publishEndpoint, IContactServic
     [HttpDelete]
     public async Task<IActionResult> DeleteContact(Guid contactId)
     {
-        // try
-        // {
-        //     // var result = await _contactServices.DeleteContact(contactId);
-
-        //     return Ok();
-        // }
-        // catch (Exception ex)
-        // {
-        //     return BadRequest(ex.Message);
-        // }
-
         await _publishEndpoint.Publish(new DeleteContactMessage(contactId));
 
         return Ok();
