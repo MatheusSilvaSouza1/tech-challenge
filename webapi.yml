@@ -14,10 +14,10 @@ data:
       },
       "AllowedHosts": "*",
       "ConnectionStrings": {
-        "DefaultConnection": "Host=db.default.svc.cluster.local; Database=tech-challenge; Username=tech-challenge; Password=tech-challenge"
+        "DefaultConnection": "Host=db; Database=tech-challenge; Username=tech-challenge; Password=tech-challenge"
       },
       "MessageHost": {
-        "Host": "amqp://rabbitmq.default.svc.cluster.local:5672",
+        "Host": "amqp://rabbitmq:5672",
         "User": "guest",
         "Pass": "guest"
       }
@@ -84,7 +84,7 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: webapi
-  minReplicas: 3
+  minReplicas: 2
   maxReplicas: 10
   metrics:
   - type: Resource

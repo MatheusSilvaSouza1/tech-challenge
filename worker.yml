@@ -13,10 +13,10 @@ data:
         }
       },
       "ConnectionStrings": {
-        "DefaultConnection": "Host=db.default.svc.cluster.local; Database=tech-challenge; Username=tech-challenge; Password=tech-challenge"
+        "DefaultConnection": "Host=db; Database=tech-challenge; Username=tech-challenge; Password=tech-challenge"
       },
       "MessageHost": {
-        "Host": "amqp://rabbitmq.default.svc.cluster.local:5672",
+        "Host": "amqp://rabbitmq:5672",
         "User": "guest",
         "Pass": "guest"
       }

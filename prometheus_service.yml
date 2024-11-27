@@ -12,11 +12,11 @@ data:
       - job_name: 'webapi'
         scrape_interval: 5s
         static_configs:
-          - targets: ['webapi.default.svc.cluster.local:7296']
+          - targets: ['webapi:7296']
 
       - job_name: 'prometheus'
         static_configs:
-          - targets: ['prometheus.default.svc.cluster.local:9090']
+          - targets: ['prometheus:9090']
 ---
 apiVersion: apps/v1
 kind: Deployment
